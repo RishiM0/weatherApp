@@ -1,5 +1,7 @@
 
-function weatherData(tempF, tempC, condition, icon, precipmm, precipin, windmph, windkph, humid, cloud) {
+const weatherData = (tempF, tempC, condition, icon, precipmm, precipin, windmph, windkph, humid, cloud) => {
+    console.log(tempF);
+    /*
     this.tempF = tempF;
     this.tempC = tempC;
     this.condition = condition;
@@ -10,15 +12,21 @@ function weatherData(tempF, tempC, condition, icon, precipmm, precipin, windmph,
     this.windkph = windkph;
     this.humid = humid;
     this.cloud = cloud;
+    */
+    return {tempF, tempC, condition, icon, precipmm, precipin, windmph, windkph, humid, cloud}
 }
 
 async function getWeather(city) {
-    const key = '05763633a9b64264b6c12601232506'
+    const key = '40ebaedc4c204c6b856184641232807'
     const api = `https://api.weatherapi.com/v1/current.json?key=${key}&q=${city}`;
 
     try {
-        let route = await fetch (api);
-        let routejson = route.json();
+        let route = await fetch(api);
+        let routejson = await route.json();
+        console.log('gothere');
+        console.log(route);
+        console.log(routejson);
+        console.log(routejson['current']['temp_f']);
         let tempF = routejson['current']['temp_f'];
         let tempC = routejson['current']['temp_c'];
         let condition = routejson['current']['condition']['text'];
@@ -29,19 +37,25 @@ async function getWeather(city) {
         let windkph = routejson['current']['wind_kph'];
         let humid = routejson['current']['humidity'];
         let cloud = routejson['current']['cloud'];
+        console.log(tempF)
         let theData = weatherData(tempF, tempC, condition, icon, precipmm, precipin, windmph, windkph, humid, cloud);
+        //console.log(theData);
         return theData;
     } catch(error) {
         return 'error'
     }
 }
 
-function postWeather(city) {
+async function postWeather(city) {
     let webpage = document.querySelector('.page');
-    let theData = getWeather(city);
-    if(theData = 'error') {
+    console.log(city);
+    let theData = await getWeather(city);
+    console.log(theData);
+    if(theData == 'error') {
+        console.log('here1');
         return 'error';
     }
+    console.log('here');
     const display = document.createElement('div');
     display.classList.add('weatherData');
     let tempdiv = document.createElement('div');

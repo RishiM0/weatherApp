@@ -1,3 +1,59 @@
-// add functionality so the form loads first, then you just load the weather data for the selected city
-// this is obviously worse than having the search form and display on the same page so the user
-// can change their city multiple times without refreshing, but this is for your skills
+import postWeather from "./weather";
+
+function createQuestion() {
+
+    let webpage = document.querySelector('.page');
+
+    let form = document.createElement("form");
+    form.classList.add('theForm')
+    form.setAttribute("method", "post");
+    //form.setAttribute("action", "submit.php");
+
+    const label = document.createElement('label');
+    label.classList.add('cityQuestion');
+    label.innerHTML = "Enter City: ";
+
+    const input = document.createElement('input');
+    input.classList.add('cityInput');
+    input.type = 'text';
+    input.value = 'London';
+    input.name = 'City';
+
+    var s = document.createElement("input");
+    s.classList.add('sumbitter')
+    s.setAttribute("type", "submit");
+    s.setAttribute("value", "Submit");
+
+    form.appendChild(label);
+    form.appendChild(input);
+    form.appendChild(s);
+    webpage.appendChild(form);
+}
+
+function postQuestion() {
+    let theCity = 'London';
+    let webpage = document.querySelector('.page');
+    createQuestion()
+    let theForm = document.querySelector('.theForm');
+    theForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('marker')
+        console.log(webpage.innerHTML);
+        let inputValue = document.querySelector('.cityInput').value;
+        console.log(`input value: ${inputValue}`);
+        theCity = inputValue;
+        webpage.innerHTML = '';
+        postWeather(theCity);
+    })
+    /*
+    postWeather(theCity);
+    submitter.onClick = () => {
+        inputValue = document.querySelector('.cityInput').value;
+        console.log(`input value: ${inputValue}`);
+        theCity = inputValue;
+        postWeather(theCity);
+    }
+    */
+}
+
+window.onload = function(){ postQuestion()};
